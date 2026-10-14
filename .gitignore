@@ -3,7 +3,12 @@
 
 # Environment
 .env
+.env.*
 !.env.example
+
+ca.pem
+app/config/certs/
+test_pdo.php
 
 # Dependencies
 vendor/

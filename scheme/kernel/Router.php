@@ -78,7 +78,7 @@ class Router
      */
     public function sanitize_url($url)
     {
-        $url = rtrim($url, '/student');
+        $url = rtrim($url, '/');
         $url = filter_var($url, FILTER_SANITIZE_URL);
 
         return $url;

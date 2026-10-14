@@ -268,10 +268,15 @@ class Database {
             PDO::ATTR_EMULATE_PREPARES   => false,
         );
 
+        if ($driver === 'mysql' && !empty($database_config['ssl_ca'])) {
+        $options[PDO::MYSQL_ATTR_SSL_CA] = $database_config['ssl_ca'];
+        }
+
         try {
             $this->db = new PDO($dsn, $username, $password, $options);
             $this->driver = $this->db->getAttribute(PDO::ATTR_DRIVER_NAME);
         } catch (Exception $e) {
+            echo "DSN: $dsn | User: $username | CA: " . ($database_config['ssl_ca'] ?? 'none') . "\n";
             $error = load_class('Errors', 'kernel');
             $error->show_database_error(
                 $e->getMessage(),
@@ -282,25 +287,13 @@ class Database {
         }
     }
 
-    /**
-     * DB Instance
-     *
-     * @param string $dbname
-     * @return void
-     */
     public static function instance($dbname)
     {
         self::$instance = new Database($dbname);
         return self::$instance;
     }
     
-    /**
-     * Validate SQL identifier (table or column name)
-     *
-     * @param string $name
-     * @return bool
-     * @throws Exception if the identifier is invalid
-     */
+
     private function validate_identifier($name)
     {
         $name = trim($name);

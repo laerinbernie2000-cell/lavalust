@@ -13,13 +13,13 @@ class UsersController extends Controller {
         $this->call->model('UsersModel');
     }
 
-    public function Users(){
-    $users = $this->UsersModel->all();
-    //$users = $this->db->table('users')->get_all();
-
-    //var_dump($users);
-    $data['users']=$users;
-    $this->call->view('user',  $data);
+    public function Users()
+    {
+        $users = $this->UsersModel->all();
+        //$users = $this->db->table('users')->get_all();
+        var_dump($users);
+        $data['users']=$users;
+        $this->call->view('user',  $data);
 
     }
 }

@@ -44,8 +44,48 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 */
 /** @var object $router **/
 
-//$router->get('/', 'Welcome::index');
+$router->get('/', 'Welcome::index');
+
 $router->get('/student', 'StudentController::index');
 $router->get('/student/profile', 'StudentController::profile')->middleware('student');
 
 $router->get('/user', 'UsersController::Users');
+
+
+$router->match('/register', 'AuthController::register', ['GET', 'POST']);
+$router->match('/login', 'AuthController::login', ['GET', 'POST']);
+
+$router->get('/logout', 'AuthController::logout');
+
+$router->get('/products', 'ProductController::index')->middleware('auth');
+
+$router->get('/products/create', 'ProductController::create')->middleware('auth');
+$router->post('/products/create', 'ProductController::create')->middleware('auth');
+
+$router->get('/products/edit/{id}', 'ProductController::edit')->middleware('auth');
+$router->post('/products/edit/{id}', 'ProductController::edit')->middleware('auth');
+
+$router->get('/products/delete/{id}', 'ProductController::delete')->middleware('auth');
+$router->get('/', 'ProductController::index')->middleware('auth');
+
+// Migration Routes
+$router->get('create-migration/{migration_class}', 'MigrationController::create_migration');
+$router->get('migrate',       'MigrationController::migrate');
+$router->get('rollback',      'MigrationController::rollback');
+$router->get('rollback-all',  'MigrationController::rollback_all');
+$router->get('refresh',       'MigrationController::refresh');
+$router->get('status',        'MigrationController::status');
+
+
+$router->get('api/products', 'ProductApiController::index');
+
+$router->post('api/products', 'ProductApiController::store');
+
+$router->put('api/products/{id}', 'ProductApiController::update');
+
+$router->patch('api/products/{id}', 'ProductApiController::update');
+
+$router->delete('api/products/{id}', 'ProductApiController::destroy');
+
+$router->post('api/login', 'ApiAuthController::login');
+$router->post('api/logout', 'ApiAuthController::logout');
