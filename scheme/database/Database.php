@@ -276,7 +276,7 @@ class Database {
             $this->db = new PDO($dsn, $username, $password, $options);
             $this->driver = $this->db->getAttribute(PDO::ATTR_DRIVER_NAME);
         } catch (Exception $e) {
-            echo "DSN: $dsn | User: $username | CA: " . ($database_config['ssl_ca'] ?? 'none') . "\n";
+           
             $error = load_class('Errors', 'kernel');
             $error->show_database_error(
                 $e->getMessage(),
