@@ -1,5 +1,21 @@
 <?php
 define('PREVENT_DIRECT_ACCESS', TRUE);
+
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+$method = strtoupper($_SERVER['REQUEST_METHOD'] ?? '');
+
+if (preg_match('#^/api(?:/|$)#', parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH))) {
+
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
+    header('Access-Control-Allow-Headers: Content-Type, Authorization');
+
+    if ($method === 'OPTIONS') {
+        http_response_code(204);
+        exit;
+    }
+}
+
 /**
  * ------------------------------------------------------------------
  * LavaLust - an opensource lightweight PHP MVC Framework
@@ -85,3 +101,4 @@ define('PUBLIC_DIR', $public_folder);
  */
 require_once SYSTEM_DIR . 'kernel/LavaLust.php';
 ?>
+
