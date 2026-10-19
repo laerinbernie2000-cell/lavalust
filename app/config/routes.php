@@ -68,13 +68,15 @@ $router->post('/products/edit/{id}', 'ProductController::edit')->middleware('aut
 $router->get('/products/delete/{id}', 'ProductController::delete')->middleware('auth');
 $router->get('/', 'ProductController::index')->middleware('auth');
 
-// Migration Routes
-$router->get('create-migration/{migration_class}', 'MigrationController::create_migration');
-$router->get('migrate',       'MigrationController::migrate');
-$router->get('rollback',      'MigrationController::rollback');
-$router->get('rollback-all',  'MigrationController::rollback_all');
-$router->get('refresh',       'MigrationController::refresh');
-$router->get('status',        'MigrationController::status');
+// Migration Routes 
+if (php_sapi_name() === 'cli') {
+    $router->get('create-migration/{migration_class}', 'MigrationController::create_migration');
+    $router->get('migrate',       'MigrationController::migrate');
+    $router->get('rollback',      'MigrationController::rollback');
+    $router->get('rollback-all',  'MigrationController::rollback_all');
+    $router->get('refresh',       'MigrationController::refresh');
+    $router->get('status',        'MigrationController::status');
+}
 
 
 $router->get('api/products', 'ProductApiController::index');
